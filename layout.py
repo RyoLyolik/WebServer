@@ -12,19 +12,27 @@ class Pages:
         return render_template('about.html', title='About', lorem=what)
 
     def home(self):
-        return render_template('home.html', title='Home', info=info, to_do=to_do)
+        return render_template('home.html', title='Home', info=info, to_do=to_do, some=some)
+
+    def download(self):
+        return render_template('download.html', title='Download')
 pages = Pages()
-@app.route('/about')
-def about():
-    return pages.about()
+
+@app.route('/')
+def ret():
+    return redirect('/home')
 
 @app.route('/home')
 def home():
     return pages.home()
 
-@app.route('/')
-def ret():
-    return redirect('/home')
+@app.route('/about')
+def about():
+    return pages.about()
+
+@app.route('/download')
+def download():
+    return pages.download()
 
 
 if __name__ == '__main__':

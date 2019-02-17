@@ -13,14 +13,14 @@ body{
 }
 .navbar-light{
     background-color: #323133!important;
+    transition: ease 200ms;
+    opacity:0.9;
+    transform: scale(1);
 }
 .navbar-light:hover{
     transition: ease 200ms;
     transform: scale(1.01);
-}
-.navbar-light{
-    transition: ease 200ms;
-    transform: scale(1);
+    opacity:1;
 }
 .content{
     margin-left:10%;
@@ -42,25 +42,31 @@ body{
     height: 100%;
 }
 .carousel{
-background: #151515;
+    background: #151515;
 }
 .carousel-control-next:hover{
-transition-duration:100ms;
-background: #191919;
+    transition-duration:100ms;
+    background: #191919;
 }
 .carousel-control-prev:hover{
-transition-duration:100ms;
-background: #191919;
+    transition-duration:100ms;
+    background: #191919;
 }
 .carousel-inner{
-padding-left:19%;
-background: #151515;
+    background: #151515;
 }
 .carousel-item {
-transition-duration:1s;
+    transition-duration:1s;
 }
-.active {
-transition-duration:1s;
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+.fit { /* set relative picture size */
+    max-width: 100%;
+    max-height: 100%;
 }
 #h_text{
     color:#3083da;
