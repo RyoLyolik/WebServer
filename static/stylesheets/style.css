@@ -58,6 +58,13 @@ body{
 .carousel-item {
     transition-duration:1s;
 }
+.download_link{
+color:white;
+}
+.download{
+padding-top: 5%;
+margin-bottom: 5%;
+}
 .center {
   display: block;
   margin-left: auto;
