@@ -95,10 +95,19 @@ border-radius: 1%;
 .form-control{
     background: #3C3B3D;
     border-color: #524a52;
+    color: #696969;
 }
-.form-control:visited{
+.form-control:focus{
     background: #3C3B3D!important;
     border-color: #524a52;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    color: #858585;
+}
+.success{
+    color: #28a745;
+}
+.success:hover{
+    color: #28bc48;
 }
 .btn.btn-primary {
     display: inline-block;
@@ -122,6 +131,10 @@ border-radius: 1%;
     margin-bottom: 15%;
 
 }
+.logout{
+    padding-left: 5%;
+    margin-bottom: 3%;
+}
 .btn.btn-primary{
     height: 1%;
 }
@@ -135,6 +148,7 @@ border-radius: 1%;
     padding-left: 3%;
 }
 #email{
+    margin-top: 3%;
     margin-bottom: 3%;
 }
 /*#password{*/

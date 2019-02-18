@@ -41,9 +41,18 @@
               <li class="nav-item">
                 <a class="nav-link disabled" href="about"><h3><small>About</small></h3></a>
               </li>
-              <li class="nav-item logs">
-                <a class="nav-link disabled" href="login"><h3><small>Log in</small></h3></a>
+              {% if "email" in session %}
+              <li>
+                <a class="nav-link" href="profile"><h3><small>{{session['name']}}</small></h3></a>
               </li>
+              {% else %}
+              <li class="nav-item logs">
+                <a class="nav-link" href="login"><h3><small>Log in</small></h3></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link success" href="registration"><h3><small>Reg</small></h3></a>
+              </li>
+              {% endif %}
             </ul>
 
       </nav>

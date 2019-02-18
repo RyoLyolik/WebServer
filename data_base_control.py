@@ -21,14 +21,15 @@ class Users:
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                              user_name VARCHAR(50),
                              password_hash VARCHAR(128),
-                             lvls
+                             lvls,
+                             email MESSAGE_TEXT UNIQUE NOT NULL
                              )''')
         cursor.close()
         self.conn.commit()
 
-    def insert(self, user_name, password_hash):
+    def insert(self, user_name, password_hash, email):
         cursor = self.conn.cursor()
-        cursor.execute('''INSERT INTO users (name, password_hash, lvls) VALUES (?, ?, 0)''', (user_name, password_hash))
+        cursor.execute('''INSERT INTO users (user_name, password_hash, lvls, email) VALUES (?, ?, 0,?)''', (user_name, password_hash, email))
         cursor.close()
         self.conn.commit()
 
@@ -44,11 +45,11 @@ class Users:
         rows = cursor.fetchall()
         return rows
 
-    def exists(self, user_name, password_hash):
+    def exists(self, email, password_hash):
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE user_name = ? AND password_hash = ?",
-                       (user_name, password_hash))
-        row = cursor.fetchone()
+        cursor.execute("SELECT * FROM users WHERE email = ? AND password_hash = ?",
+                       (email, password_hash))
+        row = cursor.fetchall()
         return (True, row[0]) if row else (False,)
 
 class Levels:
