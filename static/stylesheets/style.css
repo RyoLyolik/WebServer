@@ -87,8 +87,20 @@ color:#007bff;
 .img{
 border-radius: 1%;
 }
-
-.btn {
+.auth{
+    padding-left: 35%;
+    padding-top: 5%;
+    padding-right: 35%;
+}
+.form-control{
+    background: #3C3B3D;
+    border-color: #524a52;
+}
+.form-control:visited{
+    background: #3C3B3D!important;
+    border-color: #524a52;
+}
+.btn.btn-primary {
     display: inline-block;
     font-weight: 400;
     text-align: center;
@@ -105,6 +117,14 @@ border-radius: 1%;
     border-radius: .5rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+.submit{
+    padding-top: 15%;
+    margin-bottom: 15%;
+
+}
+.btn.btn-primary{
+    height: 1%;
+}
 #h_text{
     color:#3083da;
 }
@@ -114,7 +134,12 @@ border-radius: 1%;
     color:#696969;
     padding-left: 3%;
 }
-
+#email{
+    margin-bottom: 3%;
+}
+/*#password{*/
+    /*margin-bottom: 30%;*/
+/*}*/
 ::selection {
    background: gray;
 }

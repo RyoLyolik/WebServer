@@ -2,22 +2,23 @@ from flask import *
 from flask_wtf import *
 from wtforms import *
 from lorem import *
+from wtforms.validators import DataRequired
+from Controller import *
+from data_base_control import *
+
+class LoginForm(FlaskForm):
+    username = StringField('Логин', validators=[DataRequired()])
+    password = PasswordField('Пароль', validators=[DataRequired()])
+    remember_me = BooleanField('Запомнить меня')
+    submit = SubmitField('Войти')
+
+dbase = DB()
+users = Users(dbase.get_connection())
+users.init_table()
 
 app = Flask(__name__)
-class Pages:
-    def __init__(self):
-        pass
-
-    def about(self):
-        return render_template('about.html', title='About', lorem=what)
-
-    def home(self):
-        return render_template('home.html', title='Home', info=info, to_do=to_do, some=some)
-
-    def download(self):
-        return render_template('download.html', title='Download')
 pages = Pages()
-
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 @app.route('/')
 def ret():
     return redirect('/home')
@@ -34,6 +35,16 @@ def about():
 def download():
     return pages.download()
 
+@app.route('/levels')
+def levels():
+    return pages.levels()
+# @app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/success')
+    return render_template('login.html', title='Авторизация', form=form)
 
 if __name__ == '__main__':
     app.run(port=8000, host='127.0.0.1')
