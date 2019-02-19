@@ -31,3 +31,6 @@ class Pages:
     def load(self):
         return render_template('load.html', title='Loading')
 
+    def current_level(self, info):
+        return render_template('current_lvl.html', title=str(info[0]), info=info)
+

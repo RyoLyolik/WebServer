@@ -37,7 +37,8 @@ def download():
 
 @app.route('/levels')
 def levels():
-    l = lvls.get_all(level_id=False)
+    l = lvls.get_all(level_id=None)
+    print(l)
     return pages.levels(lvls=l)
 # @app.route('/login')
 @app.route('/login', methods=['GET', 'POST'])
@@ -129,7 +130,7 @@ def current_level(lvl_id):
     if len(lvl_info) == 0:
         return 'Такого уровня нет'
     else:
-        return str(lvl_info)
+        return pages.current_level(lvl_info[0])
 
 if __name__ == '__main__':
     app.run(port=8000, host='127.0.0.1')

@@ -74,7 +74,7 @@ class Levels:
         print(us_id)
         cursor.execute('''INSERT INTO levels (author_id, storage) VALUES (?,?)''',(us_id,'0'))
         self.connection.commit()
-        rows = self.get_all(user_id=us_id)
+        rows = self.get_all()
         rows.sort(key=lambda x:x[0])
         rows.reverse()
         lvl_id = rows[0][0]
@@ -96,9 +96,8 @@ class Levels:
     def get_all(self, level_id=None):
         cursor = self.connection.cursor()
         print(level_id)
-        level_id=str(level_id)
-        if level_id:
-            cursor.execute("SELECT * FROM levels WHERE lvl_id=?", (level_id,),)
+        if level_id is not None:
+            cursor.execute("SELECT * FROM levels WHERE lvl_id=?", (str(level_id),),)
         else:
             cursor.execute("SELECT * FROM levels")
         rows = cursor.fetchall()
