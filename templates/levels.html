@@ -5,7 +5,7 @@
 <div>
     <div class="content">
         {% for lvl in lvls%}
-        <a class="nav-link disabled" href="#"><h3><small>ID:{{lvl[0]}}</small></h3></a> <!--TODO href generation-->
+        <a class="nav-link disabled" href="current_lvl={{lvl[0]}}"><h3><small>ID:{{lvl[0]}}</small></h3></a> <!--TODO href generation-->
         {% endfor %}
     </div>
     {% if "name" in session %}

@@ -29,13 +29,13 @@ class Users:
 
     def insert(self, user_name, password_hash, email):
         cursor = self.conn.cursor()
-        cursor.execute('''INSERT INTO users (user_name, password_hash, lvls, email) VALUES (?, ?, 0,?)''', (user_name, password_hash, email))
+        cursor.execute('''INSERT INTO users (user_name, password_hash, lvls, email) VALUES (?, ?, 0,?)''', (user_name, password_hash, email,),)
         cursor.close()
         self.conn.commit()
 
     def get(self, user_id):
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id)))
+        cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id),),)
         row = cursor.fetchone()
         return row
 
@@ -82,22 +82,23 @@ class Levels:
         # print(storage)
         cursor.execute('''UPDATE levels
                             SET storage = ?
-                            WHERE lvl_id = ?''', (str(storage),str(lvl_id)))
+                            WHERE lvl_id = ?''', (str(storage),str(lvl_id)),)
         cursor.close()
         self.connection.commit()
         return lvl_id
 
     def get(self, lvl_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM levels WHERE lvl_id = ?", (str(lvl_id)))
+        cursor.execute("SELECT * FROM levels WHERE lvl_id = ?", (str(lvl_id),),)
         row = cursor.fetchone()
         return row
 
-    def get_all(self, user_id=None):
+    def get_all(self, level_id=None):
         cursor = self.connection.cursor()
-        if user_id:
-            cursor.execute("SELECT * FROM levels WHERE author_id = ?",
-                           (str(user_id)))
+        print(level_id)
+        level_id=str(level_id)
+        if level_id:
+            cursor.execute("SELECT * FROM levels WHERE lvl_id=?", (level_id,),)
         else:
             cursor.execute("SELECT * FROM levels")
         rows = cursor.fetchall()
@@ -105,6 +106,6 @@ class Levels:
 
     def delete(self, lvl_id):
         cursor = self.connection.cursor()
-        cursor.execute('''DELETE FROM levels WHERE lvl_id = ?''', (str(lvl_id)))
+        cursor.execute('''DELETE FROM levels WHERE lvl_id = ?''', (str(lvl_id),),)
         cursor.close()
         self.connection.commit()
