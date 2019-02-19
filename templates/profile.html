@@ -4,7 +4,7 @@
 <div class = 'content'>
     <p><h1 class="display-4" id="h_text">Name:<small id="text">{{session['name']}}</small></h1></p>
     <p><h1 class="display-4" id="h_text">ID:<small id="text">{{session['user_id']}}</small></h1></p>
-    <p><h1 class="display-4" id="h_text">Lvls:<small id="text">{{session['levels']}}</small></h1></p>
+    <p><h1 class="display-4" id="h_text"><a class="nav-link" href="levels">Lvls: <small id="text">{{session['levels']}}</small></a></h1></p>
     <p><h1 class="display-4" id="h_text">E-mail:<small id="text">{{session['email']}}</small></h1></p>
     <div class="logout" align="left"><button type="submit" onclick="window.location.href='logout'" class="btn btn-outline-primary">Log out</button></div>
 </div>

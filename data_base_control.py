@@ -56,35 +56,55 @@ class Levels:
     def __init__(self, connection):
         self.connection = connection
 
-    def init_table(self):
+    def table_init(self):
         cursor = self.connection.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS lvls 
-                            (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            user_id INTEGER UNIQUE,
-                             title VARCHAR(100),
-                             num INTEGER
-                             )''')
+        cursor.execute('''CREATE TABLE if NOT EXISTS levels
+        (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            author_id int NOT NULL,
+            likes int DEFAULT 0 NOT NULL,
+            dislikes int DEFAULT 0 NOT NULL,
+            rate int DEFAULT 0 NOT NULL
+        );''')
         cursor.close()
         self.connection.commit()
 
+    def insert(self, us_id):
+        cursor = self.connection.cursor()
+        print(us_id)
+        cursor.execute('''INSERT INTO levels (author_id, storage) VALUES (?,?)''',(us_id,'0'))
+        self.connection.commit()
+        rows = self.get_all(user_id=us_id)
+        rows.sort(key=lambda x:x[0])
+        rows.reverse()
+        lvl_id = rows[0][0]
+        storage = '/levels/lvl_'+str(rows[0][0])+'.txt'
+        # print(storage)
+        cursor.execute('''UPDATE levels
+                            SET storage = ?
+                            WHERE lvl_id = ?''', (str(storage),str(lvl_id)))
+        cursor.close()
+        self.connection.commit()
+        return lvl_id
+
     def get(self, lvl_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM lvls WHERE id = ?", (str(lvl_id)))
+        cursor.execute("SELECT * FROM levels WHERE lvl_id = ?", (str(lvl_id)))
         row = cursor.fetchone()
         return row
 
     def get_all(self, user_id=None):
         cursor = self.connection.cursor()
         if user_id:
-            cursor.execute("SELECT * FROM lvls WHERE user_id = ?",
+            cursor.execute("SELECT * FROM levels WHERE author_id = ?",
                            (str(user_id)))
         else:
-            cursor.execute("SELECT * FROM lvls")
+            cursor.execute("SELECT * FROM levels")
         rows = cursor.fetchall()
         return rows
 
     def delete(self, lvl_id):
         cursor = self.connection.cursor()
-        cursor.execute('''DELETE FROM lvls WHERE id = ?''', (str(lvl_id)))
+        cursor.execute('''DELETE FROM levels WHERE lvl_id = ?''', (str(lvl_id)))
         cursor.close()
         self.connection.commit()

@@ -16,6 +16,9 @@ dbase = DB()
 users = Users(dbase.get_connection())
 users.init_table()
 
+lvls = Levels(dbase.get_connection())
+lvls.table_init()
+
 app = Flask(__name__)
 pages = Pages()
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -34,48 +37,59 @@ def download():
 
 @app.route('/levels')
 def levels():
-    return pages.levels()
+    l = lvls.get_all(user_id=False)
+    return pages.levels(lvls=l)
 # @app.route('/login')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'GET':
-        return pages.login(form)
-    elif request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        print(email, password)
-        exists = users.exists(email, password)
-        if (exists[0]):
-            print(exists)
-            session['email'] = email
-            session['user_id'] = exists[1][0]
-            session['name'] = exists[1][1]
-            session['levels'] = exists[1][2]
-        return redirect("/index")
+    if 'name' not in session:
+        if request.method == 'GET':
+            return pages.login(form)
+        elif request.method == 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            print(email, password)
+            exists = users.exists(email, password)
+            if (exists[0]):
+                print(exists)
+                session['email'] = email
+                session['user_id'] = exists[1][0]
+                session['name'] = exists[1][1]
+                session['levels'] = exists[1][3]
+                session['password'] = exists[1][2]
+            return redirect("/index")
+    else:
+        return redirect('/')
 
 @app.route('/registration', methods=['GET','POST'])
 def reg():
-    if request.method == 'GET':
-        return pages.registration(form)
-    elif request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        name = request.form['name']
-        if email is not None and password and not None and name is not None:
-            try:
-                users.insert(name,password,email)
-            except sqlite3.IntegrityError:
-                return '<h1>Такая почта уже используется</h1>'
+    if 'name' not in session:
+        if request.method == 'GET':
+            return pages.registration(form)
+        elif request.method == 'POST':
+            email = request.form['email']
+            password = request.form['password']
+            name = request.form['name']
+            if email is not None and password and not None and name is not None:
+                try:
+                    users.insert(name,password,email)
+                except sqlite3.IntegrityError:
+                    return '<h1>Такая почта уже используется</h1>'
 
-        else:
-            return '<h1>Заполните все поля</h1>'
+            else:
+                return '<h1>Заполните все поля</h1>'
 
-        return redirect('/index')
+            return redirect('/index')
+
+    else:
+        return redirect('/')
 
 @app.route('/logout')
 def logout():
     session.pop('email',0)
     session.pop('user_id',0)
+    session.pop('levels',0)
+    session.pop('name',0)
     return redirect('/login')
 
 @app.route('/index')
@@ -87,5 +101,28 @@ def index():
 @app.route('/profile')
 def profile():
     return pages.profile()
+
+@app.route('/load', methods=['POST', 'GET'])
+def load():
+    if 'name' in session:
+        if request.method == 'GET':
+            return pages.load()
+
+        elif request.method == 'POST':
+            file = request.files['file']
+            data = file.read()
+            data = data.decode('utf-8')
+            data = data.split('\n')
+            data = ''.join(data)
+            lvl_id = lvls.insert(session['user_id'])
+            f = open('databases/levels/lvl_' + str(lvl_id)+'.txt', mode='w')
+            f.writelines(data)
+            f.close()
+            return pages.load()
+
+    else:
+        return redirect('/')
+
+
 if __name__ == '__main__':
     app.run(port=8000, host='127.0.0.1')

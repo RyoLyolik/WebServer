@@ -1,0 +1,17 @@
+500000
+-1000 512 10000 MainPlatform way:../textures/background/ground.png main
+196 448 64 _ way:../textures/blocks/dirt/dirt_updown_linked.png usual
+196 384 64 _ way:../textures/blocks/dirt/dirt_updown_linked.png usual
+132 320 64 _ way:../textures/blocks/grass/grass_right_linked.png usual
+196 320 64 _ way:../textures/blocks/grass/grass_leftdown_linked.png usual
+196 120 64 _ way:../textures/blocks/grass/grass.png usual
+132 -75 64 _ way:../textures/blocks/grass/grass.png usual
+196 -275 64 _ way:../textures/blocks/grass/grass.png usual
+132 -475 64 _ way:../textures/blocks/grass/grass.png usual
+196 -675 64 _ way:../textures/blocks/grass/grass.png usual
+132 -875 64 _ way:../textures/blocks/grass/grass.png usual
+196 -1075 64 _ way:../textures/blocks/grass/grass.png usual
+132 -1275 64 _ way:../textures/blocks/grass/grass.png usual
+196 -1475 64 _ way:../textures/blocks/grass/grass.png usual
+320 196 64 _ bad_entity 1000 140000000000 90000000000
+0 0 1 1 CoordsBlock usual

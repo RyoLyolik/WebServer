@@ -1,12 +1,16 @@
 {% extends "base.html" %}
  
 {% block content %}
-  <h1>Загрузим файл</h1>
-    <form method="post" enctype="multipart/form-data">
-       <div class="form-group">
-            <label for="photo">Выберите файл</label>
-            <input type="file" class="form-control-file" id="photo" name="file">
-        </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
-    </form>
+
+<div>
+    <div class="content">
+        {% for lvl in lvls%}
+        <a class="nav-link disabled" href="#"><h3><small>ID:{{lvl[0]}}</small></h3></a> <!--TODO href generation-->
+        {% endfor %}
+    </div>
+    {% if "name" in session %}
+    <button type="button" onclick="window.location.href='load'" class="btn btn-outline-success load"><a><h4>Load level</h4></a></button>
+    {% endif %}
+</div>
+
 {% endblock %}

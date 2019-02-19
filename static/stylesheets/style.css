@@ -61,9 +61,18 @@ body{
 .download_link{
 color:white;
 }
-.download{
+.home_btns{
 padding-top: 5%;
 margin-bottom: 5%;
+}
+.load{
+    position: fixed;
+}
+.form-control-file{
+    width: 25%;
+}
+.one_row{
+    padding-top: 2%;
 }
 .center {
   display: block;

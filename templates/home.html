@@ -43,7 +43,16 @@
             <span class="sr-only">Next</span>
           </a>
         </div>
-            <div class="download" align="center"><button type="button" onclick="window.location.href='download'" class="btn btn-primary"><a><h4>Download</h4></a></button></div>
+            <div class="home_btns" align="center">
+                <button type="button" onclick="window.location.href='download'" class="btn btn-primary"><a><h4>Download</h4></a></button>
+                {% if "name" not in session %}
+                <div class="one_row">
+                    <button type="button" onclick="window.location.href='login'" class="btn btn-outline-primary"><a><h4>Login</h4></a></button>
+                    <button type="button" onclick="window.location.href='registration'" class="btn btn-outline-success"><a><h4>Sign up</h4></a></button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
     <div class="what">
         <h1 class="display-4" id="h_text"><footer>What to do?</footer></h1>

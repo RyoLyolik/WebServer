@@ -16,8 +16,8 @@ class Pages:
     def download(self):
         return render_template('download.html', title='Download')
 
-    def levels(self):
-        return render_template('levels.html', title = 'Levels')
+    def levels(self, lvls):
+        return render_template('levels.html', title = 'Levels', lvls=lvls)
 
     def login(self,form):
         return render_template('login.html', title='Login', form=form)
@@ -27,4 +27,7 @@ class Pages:
 
     def profile(self):
         return render_template('profile.html', title='Profile')
+
+    def load(self):
+        return render_template('load.html', title='Loading')
 
