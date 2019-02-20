@@ -41,25 +41,29 @@ def levels():
     l = lvls.get_all(level_id=None)
     print(l)
     return pages.levels(lvls=l)
-# @app.route('/login')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print(session)
     if 'name' not in session:
         if request.method == 'GET':
-            return pages.login(form)
+            return pages.login(form, False)
         elif request.method == 'POST':
+            print('POST')
             email = request.form['email']
             password = request.form['password']
             print(email, password)
             exists = users.exists(email, password)
+            print(exists, 'exists')
             if (exists[0]):
-                print(exists)
                 session['email'] = email
                 session['user_id'] = exists[1][0]
                 session['name'] = exists[1][1]
                 session['levels'] = exists[1][3]
                 session['password'] = exists[1][2]
-            return redirect("/index")
+                return redirect("/index")
+            elif exists[0] is False:
+                return pages.login(form, True)
     else:
         return redirect('/')
 

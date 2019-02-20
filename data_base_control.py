@@ -46,6 +46,7 @@ class Users:
         return rows
 
     def exists(self, email, password_hash):
+        print('row')
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM users WHERE email = ? AND password_hash = ?",
                        (email, password_hash))

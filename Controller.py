@@ -19,8 +19,8 @@ class Pages:
     def levels(self, lvls):
         return render_template('levels.html', title = 'Levels', lvls=lvls)
 
-    def login(self,form):
-        return render_template('login.html', title='Login', form=form)
+    def login(self,form, error):
+        return render_template('login.html', title='Login', form=form, error=error)
 
     def registration(self,form):
         return render_template('reg.html', title='Registration', form=form)
