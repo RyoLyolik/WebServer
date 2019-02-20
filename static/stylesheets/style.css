@@ -74,6 +74,23 @@ margin-bottom: 5%;
 .one_row{
     padding-top: 2%;
 }
+.info{
+    padding-right: 50%;
+}
+
+button.like{
+    margin-top: 1%;
+    margin-right: 1%;
+    display:inline;
+    display:inline-block;
+    float:left;
+}
+button.dislike{
+    margin-top: 1%;
+    display:inline;
+    display:inline-block;
+    float:left;
+}
 .center {
   display: block;
   margin-left: auto;

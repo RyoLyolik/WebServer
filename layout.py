@@ -5,6 +5,7 @@ from lorem import *
 from wtforms.validators import DataRequired
 from Controller import *
 from data_base_control import *
+import os
 
 class LoginForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
@@ -124,13 +125,19 @@ def load():
     else:
         return redirect('/')
 
-@app.route('/current_lvl=<int:lvl_id>')
+@app.route('/current_lvl=<int:lvl_id>', methods=['POST', 'GET'])
 def current_level(lvl_id):
     lvl_info = lvls.get_all(level_id=lvl_id)
     if len(lvl_info) == 0:
         return 'Такого уровня нет'
     else:
         return pages.current_level(lvl_info[0])
+
+@app.route('/current_lvl=<int:lvl_id>/download', methods=['POST','GET'])
+def download_level(lvl_id):
+    filename = 'lvl_'+str(lvl_id)+'.txt'
+    upload = 'databases/levels/'
+    return send_file(upload+filename, as_attachment=True, attachment_filename=filename)
 
 if __name__ == '__main__':
     app.run(port=8000, host='127.0.0.1')

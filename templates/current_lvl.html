@@ -1,11 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="content">
-    <p><h1 class="display-4" id="h_text">ID:<small id="text">{{info[0]}}</small></h1></p>
-    <p><h1 class="display-4" id="h_text">Author ID:<small id="text">{{info[1]}}</small></h1></p>
-    <p><h1 class="display-4" id="h_text">Likes:<small id="text">{{info[2]}}</small></h1></p>
-    <p><h1 class="display-4" id="h_text">Dislikes:<small id="text">{{info[3]}}</small></h1></p>
-    <p><h1 class="display-4" id="h_text">Rate:<small id="text">{{info[4]}}</small></h1></p>
-    <button type="button" onclick="window.location.href='http://127.0.0.1:8000/databases/levels/lvl_43.txt'" class="btn btn-outline-primary"><a><h4>Download level</h4></a></button>
+    <div align="left" class="info">
+        <p><h1 class="display-4" id="h_text">ID:<small id="text">{{info[0]}}</small></h1></p>
+        <p><h1 class="display-4" id="h_text">Author ID:<small id="text">{{info[1]}}</small></h1></p>
+        <p><h1 class="display-4" id="h_text">Likes:<small id="text">{{info[2]}}</small></h1></p>
+        <p><h1 class="display-4" id="h_text">Dislikes:<small id="text">{{info[3]}}</small></h1></p>
+        <p><h1 class="display-4" id="h_text">Rate:<small id="text">{{info[4]}}</small></h1></p>
+        <button type="button" onclick="window.location.href='http://127.0.0.1:8000/current_lvl={{info[0]}}/download'" class="btn btn-outline-primary"><a><h4>Download level</h4></a></button>
+    </div>
+    <div class="like_dislike">
+        <form method="post">
+            <button type="button" type="submit" class="btn btn-outline-success like" name="like"><a><h4>Like</h4></a></button>
+            <button type="button" type="submit" class="btn btn-outline-danger dislike" name="like"><a><h4>Dislike</h4></a></button>
+        </form>
+    </div>
 </div>
 {% endblock %}
