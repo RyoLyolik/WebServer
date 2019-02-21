@@ -159,9 +159,34 @@ border-radius: 1%;
 .submit{
     padding-top: 15%;
     margin-bottom: 15%;
-
 }
-.logout{
+.beauty{
+    background: linear-gradient(90deg, #007bff, #28bc48, deeppink, yellow, #007bff);
+    background-size: 500%;
+    border-width: 0;
+    width: 76%;
+    border-radius: 32px;
+    color: #fff;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    z-index: 1;
+}
+.beauty:hover{
+    animation: animate 32s linear infinite;
+}
+@keyframes animate {
+    0%{
+        background-position-x: 0%;
+    }
+    100%{
+        background-position-x: 300%;
+    }
+}
+.beauty.edited{
+    width: 20%;
+    background-size: 500%;
+}
+.logout {
     padding-left: 5%;
     margin-bottom: 3%;
 }
