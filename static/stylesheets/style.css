@@ -123,12 +123,15 @@ border-radius: 1%;
     background: #3C3B3D;
     border-color: #524a52;
     color: #696969;
+    transition: all 0.2s ease-in;
+    transition-timing-function: cubic-bezier(0.25, 1, 0.25, 1);
 }
 .form-control:focus{
     background: #3C3B3D!important;
     border-color: #524a52;
     box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
     color: #858585;
+    transform: scale(1.05);
 }
 .success{
     color: #28a745;
@@ -178,6 +181,11 @@ border-radius: 1%;
     margin-top: 3%;
     margin-bottom: 3%;
 }
+/*#email:focus{*/
+    /*align-content: center;*/
+    /*padding-left: 10%;*/
+    /*padding-right: 10%;*/
+/*}*/
 /*#password{*/
     /*margin-bottom: 30%;*/
 /*}*/
