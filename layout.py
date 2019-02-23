@@ -109,7 +109,7 @@ def profile():
     return pages.profile()
 
 @app.route('/load', methods=['POST', 'GET'])
-def load():
+def load():sosi
     if 'name' in session:
         if request.method == 'GET':
             return pages.load()
