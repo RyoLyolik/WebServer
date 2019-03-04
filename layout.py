@@ -168,6 +168,11 @@ def get_level(lvl_id):
         data = file.read()
         return data
 
+@app.route('/get_list_of_levels')
+def get_levels():
+    l = lvls.get_all(level_id=None)
+    levels_ids = [str(i[0]) for i in l]
+    return '\n'.join(levels_ids)
 
 if __name__ == '__main__':
     app.run(port=8000, host='127.0.0.1')
