@@ -1,12 +1,12 @@
-from flask import *
-from flask_wtf import *
-from wtforms import *
-from lorem import *
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from Controller import *
 from data_base_control import *
+from werkzeug.security import generate_password_hash
 import os
 
+hash = generate_password_hash('yandexlyceum')
 
 class LoginForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
@@ -55,6 +55,7 @@ def login():
     print(session)
     if 'name' not in session:
         if request.method == 'GET':
+            form = LoginForm()
             return pages.login(form, False)
         elif request.method == 'POST':
             print('POST')
@@ -71,6 +72,7 @@ def login():
                 session['password'] = exists[1][2]
                 return redirect("/index")
             elif exists[0] is False:
+                form = LoginForm()
                 return pages.login(form, True)
     else:
         return redirect('/')
@@ -80,6 +82,7 @@ def login():
 def reg():
     if 'name' not in session:
         if request.method == 'GET':
+            form = LoginForm()
             return pages.registration(form)
         elif request.method == 'POST':
             email = request.form['email']
@@ -93,7 +96,12 @@ def reg():
 
             else:
                 return '<h1>Заполните все поля</h1>'
-
+            exists = users.exists(email, password)
+            session['user_id'] = exists[1][0]
+            session['name'] = exists[1][1]
+            session['levels'] = exists[1][3]
+            session['password'] = exists[1][2]
+            session['email'] = email
             return redirect('/index')
 
     else:
