@@ -1,14 +1,12 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from flask import *
+from flask_wtf import *
+from wtforms import *
+from lorem import *
 from wtforms.validators import DataRequired
 from Controller import *
 from data_base_control import *
-from werkzeug.security import generate_password_hash
-import ast
-
 import os
 
-hash = generate_password_hash('yandexlyceum')
 
 class LoginForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
