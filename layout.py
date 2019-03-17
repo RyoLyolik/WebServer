@@ -1,12 +1,14 @@
-from flask import *
-from flask_wtf import *
-from wtforms import *
-from lorem import *
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 from Controller import *
 from data_base_control import *
+from werkzeug.security import generate_password_hash
+import ast
+
 import os
 
+hash = generate_password_hash('yandexlyceum')
 
 class LoginForm(FlaskForm):
     username = StringField('Логин', validators=[DataRequired()])
@@ -55,6 +57,7 @@ def login():
     print(session)
     if 'name' not in session:
         if request.method == 'GET':
+            form = LoginForm()
             return pages.login(form, False)
         elif request.method == 'POST':
             print('POST')
@@ -71,6 +74,7 @@ def login():
                 session['password'] = exists[1][2]
                 return redirect("/index")
             elif exists[0] is False:
+                form = LoginForm()
                 return pages.login(form, True)
     else:
         return redirect('/')
@@ -80,6 +84,7 @@ def login():
 def reg():
     if 'name' not in session:
         if request.method == 'GET':
+            form = LoginForm()
             return pages.registration(form)
         elif request.method == 'POST':
             email = request.form['email']
@@ -93,7 +98,12 @@ def reg():
 
             else:
                 return '<h1>Заполните все поля</h1>'
-
+            exists = users.exists(email, password)
+            session['user_id'] = exists[1][0]
+            session['name'] = exists[1][1]
+            session['levels'] = exists[1][3]
+            session['password'] = exists[1][2]
+            session['email'] = email
             return redirect('/index')
 
     else:
@@ -121,8 +131,8 @@ def profile():
     return pages.profile()
 
 
-@app.route('/load', methods=['POST', 'GET'])
-def load():
+@app.route('/upload', methods=['POST', 'GET'])
+def upload():
     if 'name' in session:
         if request.method == 'GET':
             return pages.load()
@@ -133,7 +143,7 @@ def load():
             data = data.decode('utf-8')
             data = data.split('\n')
             data = ''.join(data)
-            lvl_id = lvls.insert(session['user_id'])
+            lvl_id = lvls.insert(session['user_id'], session['name'])
             f = open('databases/levels/lvl_' + str(lvl_id) + '.txt', mode='w')
             f.writelines(data)
             f.close()
@@ -149,6 +159,8 @@ def current_level(lvl_id):
     if len(lvl_info) == 0:
         return 'Такого уровня нет'
     else:
+        print(lvl_info[0])
+        author = users.get(lvl_info[0])
         return pages.current_level(lvl_info[0])
 
 
@@ -168,6 +180,38 @@ def get_level(lvl_id):
         data = file.read()
         return data
 
+
+@app.route('/get_list_of_levels')
+def get_levels():
+    l = lvls.get_all(level_id=None)
+    levels_ids = [str(i[0]) for i in l]
+    return '\n'.join(levels_ids)
+
+
+@app.route('/load_settings/us=<string:user_id>+pass=<string:password>')
+def load_settings(user_id,password):
+    data = users.get(user_id=int(user_id))
+    if password == data[2]:
+        file = open('databases\\'+data[5], mode='r')
+        settings = file.read()
+
+        return settings+'|||'+str(users.get(user_id)[1])
+
+    else:
+        return 'Неверный пароль'
+
+@app.route('/update_set+id=<string:user_id>+pass=<string:password>+setting=<string:setting>')
+def update_settings(user_id,password, setting):
+    data = users.get(user_id=int(user_id))
+    if password == data[2]:
+        file = open('databases\\player\\set_'+str(user_id)+'.json', mode='w', encoding='utf-8')
+        setting = str(setting)
+        setting = ast.literal_eval(setting)
+        json.dump(setting, file)
+        file.close()
+        return 'posted'
+    else:
+        return 'Error: wrong password'
 
 if __name__ == '__main__':
     app.run(port=8000, host='127.0.0.1')

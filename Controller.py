@@ -1,6 +1,4 @@
 from flask import *
-from flask_wtf import *
-from wtforms import *
 from lorem import *
 
 class Pages:

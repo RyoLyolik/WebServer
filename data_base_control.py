@@ -1,9 +1,13 @@
-import sqlite3
+import sqlite3, json
 
 class DB:
-    def __init__(self):
-        conn = sqlite3.connect('databases/users', check_same_thread=False)
-        self.conn = conn
+    def __init__(self, way='databases/users'):
+        try:
+            conn = sqlite3.connect(way, check_same_thread=False)
+            self.conn = conn
+        except Exception:
+            conn = sqlite3.connect('../WebServer/databases/users', check_same_thread=False)
+            self.conn = conn
 
     def get_connection(self):
         return self.conn
@@ -30,12 +34,28 @@ class Users:
     def insert(self, user_name, password_hash, email):
         cursor = self.conn.cursor()
         cursor.execute('''INSERT INTO users (user_name, password_hash, lvls, email) VALUES (?, ?, 0,?)''', (user_name, password_hash, email,),)
+        cursor.execute("SELECT * FROM users WHERE email = ?", (str(email),),)
+        set_num = cursor.fetchone()[0]
+        cursor.execute('''UPDATE users
+                            SET settings = ?
+                            WHERE email = ?''', ('/player/set_'+str(set_num)+'.json', email,),)
         cursor.close()
+        default = open('databases\\default.json', mode='r')
+        default = default.read()
+        file = open('databases\\player\\set_'+str(set_num)+'.json', mode='w')
+        file.write(default)
+        file.close()
         self.conn.commit()
 
     def get(self, user_id):
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id),),)
+        row = cursor.fetchone()
+        return row
+
+    def get_by_tele(self, tele_id):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE telegram_id = ?", (str(tele_id),),)
         row = cursor.fetchone()
         return row
 
@@ -46,12 +66,23 @@ class Users:
         return rows
 
     def exists(self, email, password_hash):
-        print('row')
         cursor = self.conn.cursor()
         cursor.execute("SELECT * FROM users WHERE email = ? AND password_hash = ?",
-                       (email, password_hash))
+                       (email, password_hash,),)
         row = cursor.fetchall()
         return (True, row[0]) if row else (False,)
+
+    def update_telegram_id(self, email, password_hash, telegram_id):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE email = ?",
+                       (email,),)
+        row = cursor.fetchall()[0]
+        if row[2] == password_hash:
+            cursor.execute("UPDATE users set telegram_id = ? where email = ?", (telegram_id, email,),)
+            self.conn.commit()
+            return 'Logged'
+        else:
+            return 'Wrong password'
 
 class Levels:
     def __init__(self, connection):
@@ -70,10 +101,10 @@ class Levels:
         cursor.close()
         self.connection.commit()
 
-    def insert(self, us_id):
+    def insert(self, us_id, author):
         cursor = self.connection.cursor()
         print(us_id)
-        cursor.execute('''INSERT INTO levels (author_id, storage) VALUES (?,?)''',(us_id,'0'))
+        cursor.execute('''INSERT INTO levels (author_id, storagem author) VALUES (?,?,?)''',(us_id,'0', author))
         self.connection.commit()
         rows = self.get_all()
         rows.sort(key=lambda x:x[0])
