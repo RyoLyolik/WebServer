@@ -84,6 +84,16 @@ class Users:
         else:
             return 'Wrong password'
 
+    def update_status(self, user_id, status):
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE users set status = ? where id = ?", (status, user_id,),)
+        self.conn.commit()
+
+    def update_name(self, user_id, name):
+        cursor = self.conn.cursor()
+        cursor.execute("UPDATE users set user_name = ? where id = ?", (name, user_id,),)
+        self.conn.commit()
+
 class Levels:
     def __init__(self, connection):
         self.connection = connection
