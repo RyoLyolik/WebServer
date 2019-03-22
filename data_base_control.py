@@ -82,7 +82,7 @@ class Users:
             self.conn.commit()
             return 'Logged'
         else:
-            return 'Wrong password'
+            return 'Wrong email or password'
 
     def update_status(self, user_id, status):
         cursor = self.conn.cursor()

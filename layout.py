@@ -6,6 +6,7 @@ from wtforms.validators import DataRequired
 from Controller import *
 from data_base_control import *
 import os
+import ast
 
 
 class LoginForm(FlaskForm):
@@ -188,15 +189,17 @@ def get_levels():
 
 @app.route('/load_settings/us=<string:user_id>+pass=<string:password>')
 def load_settings(user_id,password):
-    data = users.get(user_id=int(user_id))
-    if password == data[2]:
-        file = open('databases\\'+data[5], mode='r')
-        settings = file.read()
+    if user_id.isdigit:
+        data = users.get(user_id=int(user_id))
+        if len(data) > 1 and password == data[2]:
+            file = open('databases\\'+data[5], mode='r')
+            settings = file.read()
 
-        return settings+'|||'+str(users.get(user_id)[1])
+            return settings+'|||'+str(users.get(user_id)[1])
 
-    else:
-        return 'Неверный пароль'
+        else:
+            return 'Error'
+    return 'Error'
 
 @app.route('/update_set+id=<string:user_id>+pass=<string:password>+setting=<string:setting>')
 def update_settings(user_id,password, setting):
