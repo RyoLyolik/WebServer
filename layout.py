@@ -187,25 +187,25 @@ def get_levels():
     return '\n'.join(levels_ids)
 
 
-@app.route('/load_settings/us=<string:user_id>+pass=<string:password>')
-def load_settings(user_id,password):
-    if user_id.isdigit:
-        data = users.get(user_id=int(user_id))
+@app.route('/load_settings/us=<string:user_email>+pass=<string:password>')
+def load_settings(user_email,password):
+    if user_email.isdigit:
+        data = users.get_by_email(user_email=user_email)
         if len(data) > 1 and password == data[2]:
             file = open('databases\\'+data[5], mode='r')
             settings = file.read()
-
-            return settings+'|||'+str(users.get(user_id)[1])
+            print()
+            return settings+'|||'+str(users.get_by_email(user_email)[1])
 
         else:
             return 'Error'
     return 'Error'
 
-@app.route('/update_set+id=<string:user_id>+pass=<string:password>+setting=<string:setting>')
-def update_settings(user_id,password, setting):
-    data = users.get(user_id=int(user_id))
+@app.route('/update_set+email=<string:user_email>+pass=<string:password>+setting=<string:setting>')
+def update_settings(user_email,password, setting):
+    data = users.get_by_email(user_email=user_email)
     if password == data[2]:
-        file = open('databases\\player\\set_'+str(user_id)+'.json', mode='w', encoding='utf-8')
+        file = open('databases\\player\\set_'+str(data[0])+'.json', mode='w', encoding='utf-8')
         setting = str(setting)
         setting = ast.literal_eval(setting)
         json.dump(setting, file)
@@ -215,4 +215,4 @@ def update_settings(user_id,password, setting):
         return 'Error: wrong password'
 
 if __name__ == '__main__':
-    app.run(port=8000, host='127.0.0.1')
+    app.run(port=5000, host='127.0.0.1')

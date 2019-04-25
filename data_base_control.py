@@ -94,6 +94,13 @@ class Users:
         cursor.execute("UPDATE users set user_name = ? where id = ?", (name, user_id,),)
         self.conn.commit()
 
+    def get_by_email(self, user_email):
+        cursor = self.conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE email = ?",
+                       (user_email,), )
+        row = cursor.fetchall()[0]
+        return row
+
 class Levels:
     def __init__(self, connection):
         self.connection = connection
@@ -114,7 +121,7 @@ class Levels:
     def insert(self, us_id, author):
         cursor = self.connection.cursor()
         print(us_id)
-        cursor.execute('''INSERT INTO levels (author_id, storagem author) VALUES (?,?,?)''',(us_id,'0', author))
+        cursor.execute('''INSERT INTO levels (author_id, storage, author) VALUES (?,?,?)''',(us_id,'0', author))
         self.connection.commit()
         rows = self.get_all()
         rows.sort(key=lambda x:x[0])
